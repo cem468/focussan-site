@@ -191,6 +191,7 @@ T = {
     'Focussan Metal Sanayi. Tüm hakları saklıdır.': 'Focussan Metal Sanayi. All rights reserved.',
     'Ana sayfaya dön ↑': 'Back to home ↑',
     'Proses': 'Process',
+    'tarafından tasarlanmıştır': 'website design',
     'Talep': 'Request',
     "Parça resmini, çizimini veya numune fotoğrafını WhatsApp'tan iletin.": 'Send a drawing, part photo or sample image via WhatsApp.',
     'Teklif': 'Quote',
