@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /_kaynak/
+Disallow: /_araclar/
+Disallow: /_upscale/
+
+Sitemap: https://focussan.com/sitemap.xml

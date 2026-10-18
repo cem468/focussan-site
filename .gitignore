@@ -1,0 +1,8 @@
+# working files and raw sources (not part of the site)
+_upscale/
+_pages/
+tanitim.mp4
+statik-boya.mp4
+.claude/
+*.zip
+__pycache__/
