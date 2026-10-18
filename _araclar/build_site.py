@@ -10,6 +10,7 @@ iletisim.html, gizlilik.html, cerezler.html, en/**/*.html, 404.html, sitemap.xml
 _redirects, _headers (Cloudflare Pages) and .htaccess (Apache fallback).
 
 usage: python _araclar/build_site.py                       production build into the project root
+       python _araclar/build_site.py --out _pages --cname focussan.com   GitHub Pages production (focussan.com)
        python _araclar/build_site.py --out _pages --base-path /focussan-site --noindex   GitHub Pages preview
 """
 import html
@@ -252,7 +253,7 @@ def with_base(page, base, noindex):
     return page
 
 
-def main(out_dir=ROOT, base='', noindex=False):
+def main(out_dir=ROOT, base='', noindex=False, cname=''):
     src = {'tr': open(os.path.join(ROOT, '_kaynak/site-tr.html'), encoding='utf-8').read(),
            'en': open(os.path.join(ROOT, '_kaynak/site-en.html'), encoding='utf-8').read()}
     legal = json.load(open(os.path.join(ROOT, '_kaynak/legal.json'), encoding='utf-8'))
@@ -275,7 +276,7 @@ def main(out_dir=ROOT, base='', noindex=False):
                 write(os.path.join(rel[:-5], 'index.html'), page)
     write('404.html', build('tr', 'anasayfa', src['tr'], page_sections(src['tr']), legal, not_found=True))
 
-    if out_dir == ROOT:
+    if out_dir == ROOT or cname:
         # sitemap with hreflang alternates (production only)
         urls = []
         for key, (tr_p, en_p, _) in PAGES.items():
@@ -283,19 +284,31 @@ def main(out_dir=ROOT, base='', noindex=False):
                 urls.append(f'<url><loc>{url(p)}</loc><lastmod>{TODAY}</lastmod>'
                             f'<xhtml:link rel="alternate" hreflang="tr" href="{url(tr_p)}"/><xhtml:link rel="alternate" hreflang="en" href="{url(en_p)}"/>'
                             f'<xhtml:link rel="alternate" hreflang="x-default" href="{url(tr_p)}"/></url>')
-        open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8', newline='\n').write(
+        open(os.path.join(out_dir, 'sitemap.xml'), 'w', encoding='utf-8', newline='\n').write(
             '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
             + '\n'.join(urls) + '\n</urlset>\n')
-        open(os.path.join(ROOT, 'robots.txt'), 'w', encoding='utf-8', newline='\n').write(
+        open(os.path.join(out_dir, 'robots.txt'), 'w', encoding='utf-8', newline='\n').write(
             'User-agent: *\nAllow: /\nDisallow: /_kaynak/\nDisallow: /_araclar/\nDisallow: /_upscale/\n\nSitemap: https://focussan.com/sitemap.xml\n')
-    else:
+    if out_dir != ROOT:
         import shutil
         for name in ('images', 'fonts', 'media'):
             shutil.copytree(os.path.join(ROOT, name), os.path.join(out_dir, name), dirs_exist_ok=True)
         for name in ('logo.svg', 'favicon.ico', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'):
             shutil.copy2(os.path.join(ROOT, name), out_dir)
         open(os.path.join(out_dir, '.nojekyll'), 'w').close()
-        open(os.path.join(out_dir, 'robots.txt'), 'w', encoding='utf-8', newline='\n').write('User-agent: *\nAllow: /\n')
+        if not cname:
+            open(os.path.join(out_dir, 'robots.txt'), 'w', encoding='utf-8', newline='\n').write('User-agent: *\nAllow: /\n')
+        else:
+            open(os.path.join(out_dir, 'CNAME'), 'w', encoding='utf-8', newline='\n').write(cname + '\n')
+            # GitHub Pages has no server-side redirects: old URLs get an instant redirect page
+            for old, new in (('galeri.html', '/hizmetler'), ('en/gallery.html', '/en/services')):
+                target = url(new)
+                path = os.path.join(out_dir, old)
+                os.makedirs(os.path.dirname(path) or out_dir, exist_ok=True)
+                open(path, 'w', encoding='utf-8', newline='\n').write(
+                    f'<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Yönlendiriliyor…</title>'
+                    f'<link rel="canonical" href="{target}"><meta http-equiv="refresh" content="0; url={new}">'
+                    f'<script>location.replace("{new}")</script></head><body><a href="{new}">{target}</a></body></html>\n')
     print('pages:', len(written), '->', out_dir)
 
 
@@ -305,5 +318,6 @@ if __name__ == '__main__':
     ap.add_argument('--out', default=ROOT, help='output folder (default: project root = production build)')
     ap.add_argument('--base-path', default='', help='sub-folder the site is served from, e.g. /focussan-site')
     ap.add_argument('--noindex', action='store_true', help='add a robots noindex meta (previews)')
+    ap.add_argument('--cname', default='', help='custom domain for GitHub Pages production, e.g. focussan.com')
     a = ap.parse_args()
-    main(os.path.abspath(a.out), a.base_path.rstrip('/'), a.noindex)
+    main(os.path.abspath(a.out), a.base_path.rstrip('/'), a.noindex, a.cname)
