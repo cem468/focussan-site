@@ -43,7 +43,7 @@ META = {
     'tr': {
         'anasayfa': ('Focussan | Statik Toz Boya, TV Askı Aparatı ve Fason Montaj', 'İstanbul’da 8 metreye kadar fason elektrostatik toz boya, VESA TV askı aparatı üretimi ve fason montaj. Parça resminizi WhatsApp’tan gönderin, hızlı teklif alın.'),
         'hakkimizda': ('Hakkımızda | Focussan Metal Sanayi', 'Focussan Metal Sanayi; statik toz boya, VESA TV askı aparatı üretimi ve fason montajı tek tesiste, ortak kalite standardıyla yürüten yerli üretici.'),
-        'hizmetler': ('Hizmetlerimiz: Toz Boya, TV Askı Aparatı, Fason Montaj | Focussan', 'Endüstriyel statik toz boya, kendi VESA TV askı aparatı ürün ailemiz ve boya + montaj + paketleme yapan fason montaj hattımızla üretiminizi destekliyoruz.'),
+        'hizmetler': ('Hizmetlerimiz: Toz Boya, TV Askı Aparatı, Fason Montaj | Focussan', 'Endüstriyel statik toz boya, kendi üretimimiz VESA TV askı aparatları ve boya + montaj + paketleme yapan fason montaj hattımızla üretiminizi destekliyoruz.'),
         'toz-boya': ('Fason Statik Toz Boya – 8 Metreye Kadar Parça | Focussan', 'Çelik, alüminyum ve galvaniz parçalar için 8 metreye kadar elektrostatik toz boya. RAL Classic ve RAL Design, mat, parlak ve dokulu bitiş, 2–5 iş günü teslim.'),
         'tv-aski': ('VESA TV Askı Aparatı – Toptan ve Proje Satışı | Focussan', 'Galvaniz çelik, mat siyah toz boyalı VESA TV askı aparatları: sabit, 6 kollu, kelebek ve tavan askı. 75×75–600×400 uyumlu. Toptan ve proje fiyatı alın.'),
         'montaj': ('Fason Montaj ve Paketleme Hattı | Focussan', 'Boya, montaj, kalite kontrol ve paketleme tek çatı altında: markalı veya nötr paketleme, tek tedarikçi ve tek lojistik döngüsü. Fason montaj projenizi görüşelim.'),
